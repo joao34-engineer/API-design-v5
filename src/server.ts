@@ -6,6 +6,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import { isTest } from '../env.ts'
+import { errorHandler, APIError } from './middleware/errorHandler.ts'
 
 const app = express()
 app.use(helmet())
@@ -17,6 +18,12 @@ app.use(
   skip: () => isTest(),
 })
 )
+
+app.use((_,__, next) => {
+  next(new APIError('Not Found', 'NotFoundError', 404))
+})
+
+
 app.get('/health', (req, res) => {
   res.send(
     '<button>Click me</button>'
@@ -26,6 +33,8 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes) 
 app.use('/api/users', userRoutes)
 app.use('/api/habits', habitRoutes) 
+
+app.use(errorHandler)
 
 export { app }
 

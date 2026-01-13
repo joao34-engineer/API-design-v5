@@ -7,3 +7,6 @@ app.listen(env.PORT, () => {
   console.log(`Server is running on port http://localhost:${env.PORT}`)
 })
 
+process.on('unhandledRejection', (reason, promise) => {
+
+})
