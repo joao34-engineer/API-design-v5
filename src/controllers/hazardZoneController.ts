@@ -25,7 +25,10 @@ export const createHazardZone = async (
       color: color || '#16a34a', // Default to green (low risk)
     }).returning()
 
-    res.status(201).json(newZone)
+    res.status(201).json({ 
+      message: 'Hazard zone created successfully',
+      zone: newZone 
+    })
   } catch (e: any) {
     // Check for unique constraint violation
     if (e.code === '23505' || e.cause?.code === '23505') {
@@ -48,7 +51,7 @@ export const getHazardZones = async (
       orderBy: [desc(hazardZones.createdAt)]
     })
 
-    res.json(zones)
+    res.json({ zones })
   } catch (e) {
     console.error('Get hazard zones error:', e)
     res.status(500).json({ error: 'Failed to fetch hazard zones' })
@@ -126,7 +129,10 @@ export const updateHazardZone = async (
       return res.status(404).json({ error: 'Hazard zone not found' })
     }
 
-    res.json(updatedZone)
+    res.json({ 
+      message: 'Hazard zone updated successfully',
+      zone: updatedZone 
+    })
   } catch (e: any) {
     if (e.code === '23505' || e.cause?.code === '23505') {
       return res.status(409).json({ error: 'Hazard zone with this name already exists' })

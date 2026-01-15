@@ -43,7 +43,10 @@ export const createProtocol = async (
       return { ...newProtocol, zones }
     })
 
-    res.status(201).json(result)
+    res.status(201).json({ 
+      message: 'Safety protocol created successfully',
+      protocol: result 
+    })
     
   } catch (e) {
     console.error('Create protocol error:', e)
@@ -78,7 +81,7 @@ export const getProtocols = async (
       protocolZones: undefined,
     }))
 
-    res.json(protocolsWithZones)
+    res.json({ protocols: protocolsWithZones })
   } catch (e) {
     console.error('Get protocols error:', e)
     res.status(500).json({ error: 'Failed to fetch protocols' })
@@ -144,7 +147,10 @@ export const updateProtocol = async (
       return res.status(404).json({ error: 'Protocol not found or access denied' })
     }
 
-    res.json(result)
+    res.json({ 
+      message: 'Protocol updated successfully',
+      protocol: result 
+    })
   } catch (e) {
     console.error('Update protocol error:', e)
     res.status(500).json({ error: 'Failed to update protocol' })
@@ -269,7 +275,10 @@ export const createComplianceLog = async (
       note,
     }).returning()
 
-    res.status(201).json(newLog)
+    res.status(201).json({ 
+      message: 'Compliance check recorded',
+      log: newLog 
+    })
   } catch (e) {
     console.error('Create compliance log error:', e)
     res.status(500).json({ error: 'Failed to create compliance log' })
@@ -303,7 +312,7 @@ export const getComplianceLogs = async (
       orderBy: [desc(complianceLogs.completionDate)],
     })
 
-    res.json(logs)
+    res.json({ logs })
   } catch (e) {
     console.error('Get compliance logs error:', e)
     res.status(500).json({ error: 'Failed to fetch compliance logs' })

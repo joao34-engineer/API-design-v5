@@ -47,12 +47,12 @@ export const register = async (
 
     
   } catch(e: any) {
-    console.error('Register error', e)
+    console.error('Register error:', e?.message || e)
     // Handle duplicate email/username
     if (e.code === '23505' || e.cause?.code === '23505') {
       return res.status(409).json({ error: 'User with this email or username already exists' })
     }
-    res.status(500).json({error: 'Failed to create user account'})
+    return res.status(500).json({error: 'Failed to create user account'})
   }
 }
 
@@ -80,20 +80,18 @@ export const login = async (req: Request, res: Response) => {
       username: user.username,
     })
 
-    return res
-      .json({
-        message: "Access granted. Stay safe out there.",
-        user: {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          createdAt: user.createdAt,
-        },
-        token
-      })
-      .status(200)
+    return res.status(200).json({
+      message: "Access granted. Stay safe out there.",
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        createdAt: user.createdAt,
+      },
+      token
+    })
 
   } catch (e) {
     console.error('Login error', e)
